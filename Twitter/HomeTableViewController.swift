@@ -21,10 +21,18 @@ class HomeTableViewController: UITableViewController {
         
         myRefreshControl.addTarget(self, action: #selector(loadTweets), for: .valueChanged)
         tableView.refreshControl = myRefreshControl
+        
+        self.tableView.rowHeight = UITableView.automaticDimension
+        self.tableView.estimatedRowHeight = 150
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        self.loadTweets()
     }
     
     @objc func loadTweets(){
-        numberOfTweets = 20
+        numberOfTweets = 10
         let url = "https://api.twitter.com/1.1/statuses/home_timeline.json"
         let params = ["count": numberOfTweets]
         TwitterAPICaller.client?.getDictionariesRequest(url: url, parameters: params as [String : Any], success: { (tweets: [NSDictionary]) in
@@ -46,7 +54,7 @@ class HomeTableViewController: UITableViewController {
     
     func loadMoreTweets(){
         let url = "https://api.twitter.com/1.1/statuses/home_timeline.json"
-        numberOfTweets = numberOfTweets + 20
+        numberOfTweets = numberOfTweets + 10
         let params = ["count": numberOfTweets]
         
         TwitterAPICaller.client?.getDictionariesRequest(url: url, parameters: params as [String : Any], success: { (tweets: [NSDictionary]) in
